@@ -59,9 +59,9 @@ There are two ways to make the JS UI application an independent project and to i
 ### New installation
 
 ```
-Composer create-project koriym / js-ui-skeleton MyVendor.HelloWorldUi
-Cd MyVendor.HelloWorldUi
-Yarn install
+composer create-project koriym/js-ui-skeleton -n -s dev MyVendor.MyUi
+cd MyVendor.MyUi
+yarn install
 ```
 
 When creating it as a package and using it from a PHP project add that package to dependence.
@@ -72,10 +72,10 @@ Since you can manage versions by UI yourself, it is easy to do UI dependency man
 Add the `ui` folder and` package.json` to the existing project.
 
 ```
-Cd / path / to / project
-Composer require koriym / js-ui-skeleton
-Cp vendor / koriym / js - ui - skeleton / ui.
-Cp vendor / koriym / js - ui - skeleton / package.json.
+Cd path/to/project
+Composer require koriym/js-ui-skeleton
+Cp vendor/koriym/js-ui-skeleton/ui .
+Cp vendor/koriym/js-ui-skeleton/package.json .
 Yarn install
 ```
 

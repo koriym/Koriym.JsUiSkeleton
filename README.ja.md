@@ -66,8 +66,8 @@ JS UIアプリケーションを独立したプロジェクトにする方法と
 ### 新規インストール
 
 ```
-composer create-project koriym/js-ui-skeleton MyVendor.HelloWorldUi
-cd MyVendor.HelloWorldUi
+composer create-project koriym/js-ui-skeleton -n -s dev MyVendor.MyUi
+cd MyVendor.MyUi
 yarn install
 ```
 
@@ -79,7 +79,7 @@ UI独自でバージョンを管理することができるので、PHPプロジ
 `ui`フォルダと`package.json`を既存のプロジェクトに加えます。
 
 ```
-cd /path/to/project
+cd path/to/project
 composer require koriym/js-ui-skeleton
 cp vendor/koriym/js-ui-skeleton/ui .
 cp vendor/koriym/js-ui-skeleton/package.json .

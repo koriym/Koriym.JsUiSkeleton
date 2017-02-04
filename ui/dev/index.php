@@ -17,7 +17,7 @@ init: {
   <!-- Latest compiled and minified CSS -->
 </head>
   <body>
-  <h1><?= $page ?>.bundle.js</h1>
+  <h1><?= $app ?>.bundle.js - <?= $page ?>.php </h1>
   <h2>Rendering method</h2>
   <ui>
     <li><a href="csr.php?page=<?= $page ?>">Client Side</a></li>

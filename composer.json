@@ -13,6 +13,9 @@
         }
     ],
     "require-dev": {
-        "phpv8/v8js-stubs": "^1.3.1"
+        "phpv8/v8js-stubs": "^1.3.1",
+        "nacmartin/phpexecjs": "^0.8.7"
+    },
+    "require": {
     }
 }

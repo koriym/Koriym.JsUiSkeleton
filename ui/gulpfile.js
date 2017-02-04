@@ -15,13 +15,13 @@ const phpFiles = `${base}/src/**/*.php`;
 const isUiOnly = process.env.NODE_ENV === 'ui';
 const uiConfig = require('./ui.config');
 const publicPath = isUiOnly ? path.join(__dirname, '/dev') : uiConfig.public;
-const buildPath = isUiOnly ? path.join(__dirname, '/dev/build') : uiConfig.build;
 
 console.log(isUiOnly);
 gulp.task('webpack', () => gulp.src('./src/**')
   .pipe(webpack(webpackConfig, webpack2))
-  .pipe(gulp.dest(buildPath)
-));
+  .pipe(gulp.dest(uiConfig.build))
+  .pipe(gulp.dest(path.join(__dirname, '/dev/build')))
+);
 
 gulp.task('reload', () => {
   browserSync.reload();

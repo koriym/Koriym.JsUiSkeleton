@@ -1,6 +1,6 @@
 {
     "name": "koriym/js-ui-skeleton",
-    "description": "Javascript UI skeleton",
+    "description": "A Javascript UI skeleton for PHP project",
     "keywords": [
         "templating",
         "javascript",

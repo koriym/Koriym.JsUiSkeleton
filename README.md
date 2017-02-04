@@ -2,7 +2,7 @@
 
 [Japanese](README.ja.md)
 
-## A boilerplate for Javascript UI application with PHP
+## A Javascript UI application skeleton for PHP project
 
 Instead of PHP's Template Engine, Javascript on the server side or the client side is responsible for creating the view. Server-side rendering is done with V8Js or Node.js.
 Redux React example code is included, but you can freely select the JS template engine or UI framework.

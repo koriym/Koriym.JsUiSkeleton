@@ -2,7 +2,7 @@
 
 [English](README.md)
 
-## PHPアプリケーションのためのJavascript UIボイラープレート
+## A Javascript UI application skeleton for PHP project
 
 PHPのテンプレートエンジンの代わりに、サーバーサイドまたはクライアントサイドのJavascriptがビューをレンダリングします。サーバーサイドのレンダリングは`V8Js`または`Node.js`で実行されます。
 

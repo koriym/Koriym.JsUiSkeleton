@@ -46,7 +46,7 @@ On the server side, just create JSON and generate DOM or HTML with CSR. Normally
 
 
 ```javascript
-composer create-project koriym/js-ui-skeleton MyVendor.HelloWorldUi js-ui
+composer create-project koriym/js-ui-skeleton -n -s dev js-ui
 cd js-ui
 yarn install
 yarn run ui

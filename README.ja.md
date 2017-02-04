@@ -53,7 +53,7 @@ Redux+Reactのサンプルコードが含まれますが、JSテンプレート�
 Redux-ReactでHelloWorldを実行するデモです。[Node.js](http://nodejs.jp/nodejs.org_ja/docs/v0.10/)と[Yarn](https://yarnpkg.com/lang/en/docs/install/)をインストールして実行してみましょう。
 
 ```javascript
-composer create-project koriym/js-ui-skeleton MyVendor.HelloWorldUi js-ui
+composer create-project koriym/js-ui-skeleton -n -s dev js-ui
 cd js-ui
 yarn install
 yarn run ui

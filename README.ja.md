@@ -2,7 +2,7 @@
 
 [English](README.md)
 
-**JS-UI Skeleton**はPHPアプリケーションのためのJavascript UIボイラープレートです。
+## PHPアプリケーションのためのJavascript UIボイラープレート
 
 PHPのテンプレートエンジンの代わりに、サーバーサイドまたはクライアントサイドのJavascriptがビューをレンダリングします。サーバーサイドのレンダリングは`V8Js`または`Node.js`で実行されます。
 

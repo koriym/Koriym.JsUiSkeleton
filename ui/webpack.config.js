@@ -1,0 +1,65 @@
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const path = require('path');
+const uiConfig = require('./ui.config');
+const entry = require('./entry');
+const webpack = require('webpack');
+
+const isProd = process.env.NODE_ENV === 'production';
+const devtool = isProd ? 'cheap-module-source-map' : 'cheap-module-eval-source-map';
+const plugins = isProd ? [
+    new webpack.LoaderOptionsPlugin({
+      minimize: true,
+      debug: false,
+    }),
+] : [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+    }),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
+];
+
+module.exports = {
+  devtool: devtool,
+  entry: entry,
+  output: {
+    filename: '[name].bundle.js',
+    path: uiConfig.build,
+    publicPath: '/build/',
+  },
+  module: {
+    loaders: [
+      {
+        test: /\.jsx?$/,
+        enforce: 'pre',
+        loaders: ['eslint-loader'],
+        exclude: /(node_modules)/,
+      },
+      {
+        test: /\.jsx?$/,
+        loaders: ['babel-loader'],
+        exclude: /(node_modules)/,
+      },
+      {
+        test: /\.css$/,
+        loader: ExtractTextPlugin.extract({ fallbackLoader: 'style-loader', loader: 'css-loader' }),
+      },
+      {
+        test: /\.json$/,
+        loader: 'json-loader',
+      },
+      {
+        test: /\.(eot|woff|woff2|ttf|svg|png|jpe?g|gif)(\?\S*)?$/,
+        loader: 'url-loader',
+      },
+    ],
+  },
+  resolve: {
+    modules: [
+      path.join(__dirname, '/../node_modules'),
+      __dirname,
+    ],
+    extensions: ['.js', '.jsx'],
+  },
+  plugins: plugins
+}

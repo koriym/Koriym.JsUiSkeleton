@@ -1,12 +1,10 @@
-# JS-UI Skeleton
+# Javascript UIスケルトン
 
 [English](README.md)
 
-## A Javascript UI application skeleton for PHP project
-
 PHPのテンプレートエンジンの代わりに、サーバーサイドまたはクライアントサイドのJavascriptがビューをレンダリングします。サーバーサイドのレンダリングは`V8Js`または`Node.js`で実行されます。
 
-Redux+Reactのサンプルコードが含まれますが、JSテンプレートエンジンまたはビューライブラリは自由に選択できます。
+Redux+Reactのサンプルコードが含まれますが、JSテンプレートエンジンまたはビューライブラリは選択可能です。
 
 
  * [Webpack 2](https://webpack.github.io/) Moudle bundler
@@ -31,15 +29,15 @@ Redux+Reactのサンプルコードが含まれますが、JSテンプレート�
 
 ### SSRのみ
 
-サーバーサイドで静的ページをレンダリングします。JSのテンプレートエンジンやReatJsやVueJsのようなSSR可能なビューライブラリを使用します。
+サーバーサイドで静的ページをレンダリングします。JSのテンプレートエンジンやReatJsやVue.jsのようなSSR可能なビューライブラリを使用します。
 
 ### SSR + CSR
 
-サーバーサイドででDOMを生成しHTMLに変換します。生成されたDOMはブラウザのJSに引き継がれます。ReatJsやVueJsのようなSSR可能でDOMを生成可能なビューライブラリを使用します。
+サーバーサイドででDOMを生成しHTMLに変換します。生成されたDOMはブラウザのJSに引き継がれます。ReatJsやVue.jsのようなSSR可能でDOMを生成可能なビューライブラリを使用します。
 
 ### CSRのみ
 
-サーバーサイドではJSONを作成するだけでCSRでDOMまたはHTMLを生成します。通常documentのルートのDOM以外の部分(OGPの`<meta>`タグなど)はPHPでレンダリングします。
+サーバーサイドではJSONを作成するだけでCSRでDOMまたはHTMLを生成します。通常ドキュメントルートのDOM以外の部分はPHPでレンダリングします。
 
 ## 前提条件
 
@@ -122,7 +120,7 @@ module.exports = {
 
 ## エントリーファイル設定
 
-`ui/entry.js`にエントリーファイルを指定します。SSRのファイルには`_ssr`ポストフィックスをつけます。
+`ui/entry.js`にエントリーファイルを指定します。SSRのファイルには`_ssr`ポストフィックスをつけます。(hot module loaderを無効にします)
 
 ```javascript
 module.exports = {
@@ -131,8 +129,8 @@ module.exports = {
 };
 ```
 
+## 開発用UIアプリの実行設定
 
-###
 `ui/dev/config/`フォルダに、JSアプリケーションの設定ファイルを設置します。
 
 ```php
@@ -169,24 +167,39 @@ module.exports = {
 
 ### サーバーサイド
 
-PHPから２種類の値を受け取り、結果を`__SERVER_SIDE_MARKUP__`にページ全体のhtmlを代入する関数を作成します。
-
- * `__SSR_METAS__` SSRのみで扱う値
- * `__PRELOADED_STATE__` PHPから渡されるその他の全ての値
+JSアプリケーションはパラメーターを２つ（`preloadedState`と`metas`）受け取りhtml文字列を返す関数を作成して公開します。以下のコードはReduxの典型的なSSRアプリケーションの例です。
 
 ```javascript
 // server.js
+import render from './render';
 
-window.__SERVER_SIDE_MARKUP__ = render(window.__PRELOADED_STATE__, window.__SSR_METAS__);
+global.render = render;
+```
+
+```javascript
+// render.js
+const render = (preloadedState, metas) => {
+  return
+  `<html>
+    <head>
+      <title>${escape(metas.title)}</title>
+    </head>
+    <body>
+      <script>window.__PRELOADED_STATE__ = ${serialize(preloadedState)}</script>
+    <body>
+  </html>`
+};
+export default render;
 ```
 
 ### クライアントサイド
 
-`document.getElementById('root')`にDOMまたはHTMLを挿入するコードを用意します。
-
+サーバーサイドでレンダリングから渡された`preloadedState`を用いてDOMを生成し、ドキュメントのルートDOMにします。クラアイントはサーバーサイドのDOMを引き継ぐことができます。
 
 ```
-// client.js reduxの例
+// client.js
+const preloadedState = window.__PRELOADED_STATE__;
+const store = configureStore(preloadedState);
 
 render(
   <Provider store={store}>
@@ -245,3 +258,8 @@ yarn run lint
 ```
 
 [Eslint](http://eslint.org/)を実行します。設定を変更するには`.eslintrc`を編集します。
+
+# SSRユーティリティ
+
+[Baracoa](https://github.com/koriym/Koriym.Baracoa)はSSRのためのユーティリティライブラリで、V8を高速に実行するためのスナップショットの機能をサポートします。
+

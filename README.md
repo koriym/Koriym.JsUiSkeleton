@@ -43,7 +43,7 @@ On the server side, just create JSON and generate DOM or HTML with CSR. Normally
 
 ## Demo
 
-
+Build and run example redux code.
 
 ```javascript
 composer create-project koriym/js-ui-skeleton -n -s dev js-ui
@@ -149,23 +149,39 @@ Save the setting file with an arbitrary name, You select it on the screen and ex
 ## Create UI Application
 ### Server side
 
-It takes two kinds of values from PHP and creates a function which assigns html of the whole page to `__SERVER_SIDE_MARKUP__` as a result.
-
- * `__SSR_METAS__` Value dealt with only SSR
- * `__PRELOADED_STATE__` All other values passed from PHP
+In a JS renderer application, implement `render` function which takes two parameters (`preloadedState` and `metas`) and return html string. This example illustrates typical SSR Redux application.
 
 ```javascript
 // server.js
+import render from './render';
 
-window.__SERVER_SIDE_MARKUP__ = render(window.__PRELOADED_STATE__, window.__SSR_METAS__);
-
+global.render = render;
 ```
+
+```javascript
+// render.js
+const render = (preloadedState, metas) => {
+  return
+  `<html>
+    <head>
+      <title>${escape(metas.title)}</title>
+    </head>
+    <body>
+      <script>window.__PRELOADED_STATE__ = ${serialize(preloadedState)}</script>
+    <body>
+  </html>`
+};
+export default render;
+```
+
 ### Client side
 
-Prepare the code to insert DOM or HTML into `document.getElementById ('root')`.
+Render with `preloadedState` which is supplied by SSR. Then insert generated DOM into document root DOM for continuation.
 
 ```
-// client.js reduxの例
+// client.js
+const preloadedState = window.__PRELOADED_STATE__;
+const store = configureStore(preloadedState);
 
 render(
   <Provider store={store}>
@@ -225,3 +241,7 @@ Yarn run lint
 ```
 
 Run [Eslint](http://eslint.org/). Edit `.eslintrc` to change the setting.
+
+# SSR Utility library
+
+[Baracoa](https://github.com/koriym/Koriym.Baracoa) is a utility library for SSR. A V8 snapshot is supported to boost the performance.

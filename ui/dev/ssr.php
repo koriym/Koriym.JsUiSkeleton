@@ -9,14 +9,12 @@ $page = $_GET['page'] ?? 'index';
 list($app, $preloadState, $ssrMetas) = require(__DIR__ . "/config/{$page}.php");
 $code = sprintf('var console = {warn: function(){}, error: function(){}};
 var global = global || this, self = self || this, window = window || this;
-window.__PRELOADED_STATE__ = %s;
-window.__SSR_METAS__ = %s;
 %s
-window.__SERVER_SIDE_MARKUP__;
+window.__SERVER_SIDE_MARKUP__ = render(%s,%s);
 ',
+    file_get_contents(__DIR__ . "/build/{$app}_ssr.bundle.js"),
     json_encode($preloadState),
-    json_encode($ssrMetas),
-    file_get_contents(__DIR__ . "/build/{$app}_ssr.bundle.js")
+    json_encode($ssrMetas)
 );
 $start = microtime(true);
 $html = $phpexecjs->evalJs($code);

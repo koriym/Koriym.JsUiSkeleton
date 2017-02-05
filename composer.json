@@ -17,5 +17,8 @@
         "nacmartin/phpexecjs": "^0.8.7"
     },
     "require": {
+    },
+    "suggest": {
+        "koriym/baracoa": "Supports snapshot V8 rendering."
     }
 }

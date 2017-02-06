@@ -186,6 +186,7 @@ const render = (preloadedState, metas) => {
     </head>
     <body>
       <script>window.__PRELOADED_STATE__ = ${serialize(preloadedState)}</script>
+      <script src="/build/index.bundle.js"></script>
     <body>
   </html>`
 };

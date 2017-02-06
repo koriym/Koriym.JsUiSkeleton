@@ -72,11 +72,11 @@ Since you can manage versions by UI yourself, it is easy to do UI dependency man
 Add the `ui` folder and` package.json` to the existing project.
 
 ```
-Cd path/to/project
-Composer require koriym/js-ui-skeleton
-Cp vendor/koriym/js-ui-skeleton/ui .
-Cp vendor/koriym/js-ui-skeleton/package.json .
-Yarn install
+cd path/to/project
+composer require koriym/js-ui-skeleton ^
+cp vendor/koriym/js-ui-skeleton/ui .
+cp vendor/koriym/js-ui-skeleton/package.json .
+yarn install
 ```
 
 The directory structure looks like this.
@@ -168,6 +168,7 @@ const render = (preloadedState, metas) => {
     </head>
     <body>
       <script>window.__PRELOADED_STATE__ = ${serialize(preloadedState)}</script>
+      <script src="/build/index.bundle.js"></script>
     <body>
   </html>`
 };

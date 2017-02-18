@@ -218,7 +218,7 @@ yarn start
 Start the PHP application with hot module loader and browserSync.
 
 ```
-Yarn run dev
+yarn run dev
 ```
 
 To monitor `phpmd` and `phpcs`, edit the dev command of `phpmd.xml` and` phpcs.xml` installation `package.json` in the project root and change it from` dev` to `dev-qa`.
@@ -230,7 +230,7 @@ To monitor `phpmd` and `phpcs`, edit the dev command of `phpmd.xml` and` phpcs.x
 ## Test
 
 ```
-Yarn test
+yarn test
 ```
 
 Monitor JS test execution by `Karma` +` Mocha` + `Chai`. Edit `karma.conf.js` to change the setting.
@@ -238,7 +238,7 @@ Monitor JS test execution by `Karma` +` Mocha` + `Chai`. Edit `karma.conf.js` to
 ## Lint
 
 ```
-Yarn run lint
+yarn run lint
 ```
 
 Run [Eslint](http://eslint.org/). Edit `.eslintrc` to change the setting.

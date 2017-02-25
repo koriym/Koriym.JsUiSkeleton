@@ -24,7 +24,7 @@ const entry = require('./entry');
 if (!isProd) {
   Object.keys(entry).forEach((key) => {
     const hotClient = ['webpack-hot-middleware/client?reload=true'];
-    const isCsr = key.slice(-4) != '_ssr';
+    const isCsr = key.slice(-4) !== '_ssr';
     if (isCsr) {
       entry[key] = hotClient.concat(entry[key]);
     }
@@ -40,7 +40,7 @@ module.exports = {
     publicPath: '/build/',
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
         enforce: 'pre',

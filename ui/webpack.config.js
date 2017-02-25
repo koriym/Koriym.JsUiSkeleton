@@ -2,27 +2,29 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const path = require('path');
 const uiConfig = require('./ui.config');
 const webpack = require('webpack');
+
 const isProd = process.env.NODE_ENV === 'production';
 const devtool = isProd ? 'cheap-module-source-map' : 'cheap-module-eval-source-map';
 const plugins = isProd ? [
-    new ExtractTextPlugin('styles.css'),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true,
-      debug: false,
-    }),
+  new ExtractTextPlugin('styles.css'),
+  new webpack.LoaderOptionsPlugin({
+    minimize: true,
+    debug: false,
+  }),
 ] : [
-    new ExtractTextPlugin('styles.css'),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-    }),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
+  new ExtractTextPlugin('styles.css'),
+  new webpack.DefinePlugin({
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+  }),
+  new webpack.HotModuleReplacementPlugin(),
+  new webpack.NoEmitOnErrorsPlugin(),
 ];
-let entry = require('./entry');
-if (! isProd) {
-  Object.keys(entry).forEach(key => {
+const entry = require('./entry');
+
+if (!isProd) {
+  Object.keys(entry).forEach((key) => {
     const hotClient = ['webpack-hot-middleware/client?reload=true'];
-    let isCsr = key.slice(-4) != '_ssr';
+    const isCsr = key.slice(-4) != '_ssr';
     if (isCsr) {
       entry[key] = hotClient.concat(entry[key]);
     }
@@ -30,8 +32,8 @@ if (! isProd) {
 }
 
 module.exports = {
-  devtool: devtool,
-  entry: entry,
+  devtool,
+  entry,
   output: {
     filename: '[name].bundle.js',
     path: uiConfig.build,
@@ -71,5 +73,5 @@ module.exports = {
     ],
     extensions: ['.js', '.jsx'],
   },
-  plugins: plugins
-}
+  plugins,
+};

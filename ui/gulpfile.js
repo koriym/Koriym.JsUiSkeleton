@@ -9,18 +9,18 @@ const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const gulp = require('gulp');
 const webpackConfig = require('./webpack.config.js');
+const uiConfig = require('./ui.config');
+
 const bundler = webpack2(webpackConfig);
 const base = path.join(__dirname, '../');
 const phpFiles = `${base}/src/**/*.php`;
 const isUiOnly = process.env.NODE_ENV === 'ui';
-const uiConfig = require('./ui.config');
 const publicPath = isUiOnly ? path.join(__dirname, '/dev') : uiConfig.public;
 
-console.log(isUiOnly);
 gulp.task('webpack', () => gulp.src('./src/**')
   .pipe(webpack(webpackConfig, webpack2))
   .pipe(gulp.dest(uiConfig.build))
-  .pipe(gulp.dest(path.join(__dirname, '/dev/build')))
+  .pipe(gulp.dest(path.join(__dirname, '/dev/build'))),
 );
 
 gulp.task('reload', () => {
@@ -66,14 +66,14 @@ gulp.task('browser-sync', ['php'], () => {
 gulp.task('sync', ['browser-sync'], () => {
   gulp.watch(
     phpFiles,
-    ['reload']
+    ['reload'],
   );
 });
 
 gulp.task('php-qa', ['php'], () => {
   gulp.watch(
-    php,
-    ['phpcs', 'phpmd']
+    phpFiles,
+    ['phpcs', 'phpmd'],
   );
 });
 

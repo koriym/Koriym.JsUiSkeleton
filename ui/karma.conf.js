@@ -1,5 +1,6 @@
-var path = require('path');
-module.exports = config => {
+const path = require('path');
+
+module.exports = (config) => {
   config.set({
     frameworks: ['mocha', 'chai'],
     files: [
@@ -23,11 +24,11 @@ module.exports = config => {
         ],
       },
       externals: {
-        'jsdom': 'window',
-        'cheerio': 'window',
+        jsdom: 'window',
+        cheerio: 'window',
         'react/lib/ReactContext': true,
         'react/lib/ExecutionEnvironment': true,
-        'react/addons': true
+        'react/addons': true,
       },
       resolve: {
         modules: [

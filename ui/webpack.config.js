@@ -5,11 +5,13 @@ const webpack = require('webpack');
 const isProd = process.env.NODE_ENV === 'production';
 const devtool = isProd ? 'cheap-module-source-map' : 'cheap-module-eval-source-map';
 const plugins = isProd ? [
+    new ExtractTextPlugin('styles.css'),
     new webpack.LoaderOptionsPlugin({
       minimize: true,
       debug: false,
     }),
 ] : [
+    new ExtractTextPlugin('styles.css'),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
     }),

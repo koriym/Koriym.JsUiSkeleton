@@ -72,7 +72,7 @@ gulp.task('sync', ['browser-sync'], () => {
 
 gulp.task('php-qa', ['php'], () => {
   gulp.watch(
-    php,
+    phpFiles,
     ['phpcs', 'phpmd'],
   );
 });

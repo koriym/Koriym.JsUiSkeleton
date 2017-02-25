@@ -20,7 +20,7 @@ const publicPath = isUiOnly ? path.join(__dirname, '/dev') : uiConfig.public;
 gulp.task('webpack', () => gulp.src('./src/**')
   .pipe(webpack(webpackConfig, webpack2))
   .pipe(gulp.dest(uiConfig.build))
-  .pipe(gulp.dest(path.join(__dirname, '/dev/build'))),
+  .pipe(gulp.dest(path.join(__dirname, '/dev/build')))
 );
 
 gulp.task('reload', () => {
@@ -66,14 +66,14 @@ gulp.task('browser-sync', ['php'], () => {
 gulp.task('sync', ['browser-sync'], () => {
   gulp.watch(
     phpFiles,
-    ['reload'],
+    ['reload']
   );
 });
 
 gulp.task('php-qa', ['php'], () => {
   gulp.watch(
     phpFiles,
-    ['phpcs', 'phpmd'],
+    ['phpcs', 'phpmd']
   );
 });
 

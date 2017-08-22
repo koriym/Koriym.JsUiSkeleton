@@ -45,7 +45,7 @@ On the server side, just create JSON and generate DOM or HTML with CSR. Normally
 
 Build and run example redux code.
 
-```javascript
+```
 composer create-project koriym/js-ui-skeleton -n -s dev js-ui
 cd js-ui
 yarn install
@@ -73,8 +73,8 @@ Add the `ui` folder and` package.json` to the existing project.
 
 ```
 cd path/to/project
-composer require koriym/js-ui-skeleton ^
-cp vendor/koriym/js-ui-skeleton/ui .
+composer require koriym/js-ui-skeleton 1.x-dev
+cp -r vendor/koriym/js-ui-skeleton/ui .
 cp vendor/koriym/js-ui-skeleton/package.json .
 yarn install
 ```
@@ -104,17 +104,17 @@ The directory structure looks like this.
 Edit `ui/ui.config.js` to specify web public folder and the output directory of the bundled JS file by webpack.
 
 ```javascript
-Const path = require ('path');
-
-Module.exports = {
-   Public: path.join (__ dirname, '../public'),
-   Build: path.join (__ dirname, '../public/dist')
+const path = require('path');
+  
+module.exports = {
+  public: path.join(__dirname, '../public'),
+  build: path.join(__dirname, '../public/dist'),
 };
 ```
 
 ## Entry File
 
-Specify the entry file in `ui / entry.js`. The SSR file is given a `_ssr` postfix.
+Specify the entry file in `ui/entry.js`. The SSR file is given a `_ssr` postfix.
 
 ```javascript
 module.exports = {
@@ -131,10 +131,10 @@ Set the JS application configuration file in the `ui/dev/config/` directory.
 <?php
 $app = 'index';
 $initialState = [
-    'hello' =>['name' => 'World']
+    'hello' => ['name' => 'World']
 ];
 $ssrMetas = [
-    'title' =>'page-title'
+    'title' => 'page-title'
 ];
 
 return [$app, $initialState, $ssrMetas];
@@ -179,7 +179,7 @@ export default render;
 
 Render with `preloadedState` which is supplied by SSR. Then insert generated DOM into document root DOM for continuation.
 
-```
+```javascript
 // client.js
 const preloadedState = window.__PRELOADED_STATE__;
 const store = configureStore(preloadedState);
@@ -196,7 +196,7 @@ render(
 
 Execute the UI application created with Javascript.
 
-```javascript
+```
 yarn run ui
 ```
 

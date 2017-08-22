@@ -1,10 +1,10 @@
 <?php
 $app = 'index';
 $initialState = [
-    'hello' =>['name' => 'World']
+    'hello' => ['name' => 'World']
 ];
 $metas = [
-    'title' =>'page-title'
+    'title' => 'page-title'
 ];
 
 return [$app, $initialState, $metas];

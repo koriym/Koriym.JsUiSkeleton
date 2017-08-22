@@ -17,11 +17,12 @@ const phpFiles = `${base}/src/**/*.php`;
 const isUiOnly = process.env.NODE_ENV === 'ui';
 const publicPath = isUiOnly ? path.join(__dirname, '/dev') : uiConfig.public;
 
-gulp.task('webpack', () => gulp.src('./src/**')
-  .pipe(webpack(webpackConfig, webpack2))
-  .pipe(gulp.dest(uiConfig.build))
-  .pipe(gulp.dest(path.join(__dirname, '/dev/build'))),
-);
+gulp.task('webpack', () => {
+  gulp.src('./src/**')
+    .pipe(webpack(webpackConfig, webpack2))
+    .pipe(gulp.dest(uiConfig.build))
+    .pipe(gulp.dest(path.join(__dirname, '/dev/build')));
+});
 
 gulp.task('reload', () => {
   browserSync.reload();

@@ -67,14 +67,14 @@ gulp.task('browser-sync', ['php'], () => {
 gulp.task('sync', ['browser-sync'], () => {
   gulp.watch(
     phpFiles,
-    ['reload'],
+    ['reload']
   );
 });
 
 gulp.task('php-qa', ['php'], () => {
   gulp.watch(
     phpFiles,
-    ['phpcs', 'phpmd'],
+    ['phpcs', 'phpmd']
   );
 });
 

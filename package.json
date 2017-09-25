@@ -8,6 +8,11 @@
     "test": "$(npm bin)/karma start ui/karma.conf.js",
     "lint": "$(npm bin)/eslint 'ui/src/**/*.@(js|jsx)'"
   },
+  "private": true,
+  "engines": {
+    "node": ">=6.5",
+    "npm": ">=3.10"
+  },
   "dependencies": {
     "escape-html": "^1.0.3",
     "react": "^15.0.1",
@@ -58,6 +63,5 @@
     "webpack-dev-middleware": "^1.10.0",
     "webpack-hot-middleware": "^2.13.2",
     "webpack-stream": "^3.2.0"
-  },
-  "private": true
+  }
 }

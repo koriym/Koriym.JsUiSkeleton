@@ -1,13 +1,5 @@
 {
-  "name": "",
-  "scripts": {
-    "start": "gulp --gulpfile ui/gulpfile.js start",
-    "dev": "cross-env NODE_ENV=development gulp --gulpfile ui/gulpfile.js dev",
-    "ui": "cross-env NODE_ENV=ui gulp --gulpfile ui/gulpfile.js dev",
-    "build": "cross-env NODE_ENV=production $(npm bin)/webpack -p --progress --config ui/webpack.config.js",
-    "test": "$(npm bin)/karma start ui/karma.conf.js",
-    "lint": "$(npm bin)/eslint 'ui/src/**/*.@(js|jsx)'"
-  },
+  "name": "js-ui",
   "private": true,
   "engines": {
     "node": ">=6.5",
@@ -63,5 +55,13 @@
     "webpack-dev-middleware": "^1.10.0",
     "webpack-hot-middleware": "^2.13.2",
     "webpack-stream": "^3.2.0"
+  },
+  "scripts": {
+    "start": "gulp --gulpfile ui/gulpfile.js start",
+    "dev": "cross-env NODE_ENV=development gulp --gulpfile ui/gulpfile.js dev",
+    "ui": "cross-env NODE_ENV=ui gulp --gulpfile ui/gulpfile.js dev",
+    "build": "cross-env NODE_ENV=production $(npm bin)/webpack -p --progress --config ui/webpack.config.js",
+    "test": "$(npm bin)/karma start ui/karma.conf.js",
+    "lint": "$(npm bin)/eslint 'ui/src/**/*.@(js|jsx)'"
   }
 }

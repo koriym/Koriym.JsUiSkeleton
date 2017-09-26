@@ -1,11 +1,14 @@
 {
-  "extends": "airbnb",
+  "extends": ["airbnb"],
   "env": {
     "browser": true,
     "jasmine": true
   },
-  "rules": {
-    "import/no-unresolved": [0],
-    "import/extensions": [0],
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": "ui/webpack.config.js"
+      }
+    }
   }
 }

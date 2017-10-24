@@ -4,7 +4,7 @@ $initialState = [
     'hello' => ['name' => 'World']
 ];
 $metas = [
-    'title' => 'page-title'
+    'title' => 'SSR'
 ];
 
 return [$app, $initialState, $metas];

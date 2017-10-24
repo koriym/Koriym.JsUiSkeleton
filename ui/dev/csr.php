@@ -4,10 +4,9 @@ init: {
     list($app, $preloadState,) = require(__DIR__ . "/config/{$page}.php");
 }
 ?>
-<!doctype>
-<html>
+<!DOCTYPE html>
 <head>
-  <title>JS UI Skeleton</title>
+  <title>CSR</title>
 </head>
 <body>
   <div id="root"></div>

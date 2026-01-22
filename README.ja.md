@@ -6,7 +6,7 @@
 
 PHPアプリケーション向けのJavaScript UIスケルトンです。サーバーサイドレンダリング（SSR）をV8JsまたはNode.jsで実行します。
 
-### スタック
+## スタック
 
 - [Vite](https://vitejs.dev/) - 次世代フロントエンドツール
 - [React 18](https://react.dev/) - UIフレームワーク

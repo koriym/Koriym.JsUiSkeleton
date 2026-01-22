@@ -1,266 +1,202 @@
-# Javascript UIスケルトン
+# JavaScript UIスケルトン
+
+[![CI](https://github.com/koriym/Koriym.JsUiSkeleton/actions/workflows/ci.yml/badge.svg)](https://github.com/koriym/Koriym.JsUiSkeleton/actions/workflows/ci.yml)
 
 [English](README.md)
 
-PHPのテンプレートエンジンの代わりに、サーバーサイドまたはクライアントサイドのJavascriptがビューをレンダリングします。サーバーサイドのレンダリングは`V8Js`または`Node.js`で実行されます。
+PHPアプリケーション向けのJavaScript UIスケルトンです。サーバーサイドレンダリング（SSR）をV8JsまたはNode.jsで実行します。
 
-Redux+Reactのサンプルコードが含まれますが、JSテンプレートエンジンまたはビューライブラリは選択可能です。
+### スタック
 
+- [Vite](https://vitejs.dev/) - 次世代フロントエンドツール
+- [React 18](https://react.dev/) - UIフレームワーク
+- [Redux Toolkit](https://redux-toolkit.js.org/) - 状態管理
+- [Vitest](https://vitest.dev/) - ユニットテスト
+- [ESLint 9](https://eslint.org/) - コードリンティング（フラットコンフィグ）
 
- * [Webpack 2](https://webpack.github.io/) Moudle bundler
- * [Gulp](http://gulpjs.com/) Build system
- * [Babel](https://babeljs.io/) JS transpiler
- * [Karma](https://karma-runner.github.io/0.13/index.html) Test Runner
- * [Mocha](http://mochajs.org/) Test framework
- * [Chai](http://chaijs.com/) BDD / TDD assertion framework
- * [Enzyme](https://github.com/airbnb/enzyme) JavaScript Testing utilities for React
- * [Eslint](http://eslint.org/) Linting utility for JS and JSX
- * [Phantomjs](http://phantomjs.org/) Scriptable Headless WebKit
- * [React](https://facebook.github.io/react/) UI framework
- * [React Hot Loader 3](http://gaearon.github.io/react-hot-loader/) + [BrowserSync](https://browsersync.io/) Live update
- * [Redux](http://redux.js.org/) State container
+## 前提条件
+
+- Node.js 20+
+- [V8Js PHP extension](https://github.com/phpv8/v8js)（オプション - Node.jsフォールバック利用可能）
 
 ## 用語
 
- * SSR サーバーサイドレンダリング 
- * CSR クライアントサイドレンダリング 
+- SSR - サーバーサイドレンダリング
+- CSR - クライアントサイドレンダリング
 
 ## レンダリングシナリオ
 
 ### SSRのみ
 
-サーバーサイドで静的ページをレンダリングします。JSのテンプレートエンジンやReatJsやVue.jsのようなSSR可能なビューライブラリを使用します。
+サーバーサイドで静的ページをレンダリングします。JSテンプレートエンジンやReactのようなSSR可能なフレームワークを使用します。
 
-### SSR + CSR
+### SSR + CSR（ハイドレーション）
 
-サーバーサイドででDOMを生成しHTMLに変換します。生成されたDOMはブラウザのJSに引き継がれます。ReatJsやVue.jsのようなSSR可能でDOMを生成可能なビューライブラリを使用します。
+サーバーでHTMLを生成し、クライアントでハイドレーションしてインタラクティブにします。
 
 ### CSRのみ
 
-サーバーサイドではJSONを作成するだけでCSRでDOMまたはHTMLを生成します。通常ドキュメントルートのDOM以外の部分はPHPでレンダリングします。
+サーバーはJSONを返し、ブラウザでUIをレンダリングします。OGP `<meta>`タグなどDOM以外の要素はPHPで処理します。
 
-## 前提条件
+## クイックスタート
 
- * [Node.js](https://nodejs.org/en/)
- * [Yarn](https://yarnpkg.com/)
- * [V8Js PHP extension](https://github.com/phpv8/v8js)  (オプション)
- 
-
-## デモ
-
-Redux-ReactでHelloWorldを実行するデモです。[Node.js](http://nodejs.jp/nodejs.org_ja/docs/v0.10/)と[Yarn](https://yarnpkg.com/lang/en/docs/install/)をインストールして実行してみましょう。
-
-```javascript
+```bash
 composer create-project koriym/js-ui-skeleton -n -s dev js-ui
 cd js-ui
-yarn install
-yarn run ui
+npm install
+npm run dev
 ```
 
 ## インストール
 
-JS UIアプリケーションを独立したプロジェクトにする方法と、既存のPHPのプロジェクトに含む方法があります。
+### 新規プロジェクト
 
-### 新規インストール
-
-```
+```bash
 composer create-project koriym/js-ui-skeleton -n -s dev MyVendor.MyUi
 cd MyVendor.MyUi
-yarn install
+npm install
 ```
 
-パッケージとして作成し、PHPプロジェクトから利用する場合はそのパッケージを依存に加えます。
-UI独自でバージョンを管理することができるので、PHPプロジェクトからのUI依存管理と並行作業が容易です。
+### 既存プロジェクトに追加
 
-### 既存のプロジェクトに追加
-
-`ui`フォルダと`package.json`を既存のプロジェクトに加えます。
-
-```
+```bash
 cd path/to/project
-composer require koriym/js-ui-skeleton
-cp vendor/koriym/js-ui-skeleton/ui .
+composer require koriym/js-ui-skeleton 1.x-dev
+cp -r vendor/koriym/js-ui-skeleton/ui .
 cp vendor/koriym/js-ui-skeleton/package.json .
-yarn install
+cp vendor/koriym/js-ui-skeleton/vite.config.ts .
+cp vendor/koriym/js-ui-skeleton/vitest.config.ts .
+cp vendor/koriym/js-ui-skeleton/eslint.config.js .
+npm install
 ```
 
-ディレクトリ構造はこのようになります。
+### ディレクトリ構造
 
 ```
-├── src             # php
-├── tests           # php
-├── package.json    # JS
-├── node_modules    # JS
-├── ui              # JS
-│   ├── .babelrc
-│   ├── .eslintrc
-│   ├── entry.js
-│   ├── gulpfile.js
-│   ├── karma.conf.js
-│   ├── src
-│   ├── test
-│   ├── ui.config.js
-│   └── webpack.config.js
-└── vendor
+├── package.json
+├── vite.config.ts
+├── vitest.config.ts
+├── eslint.config.js
+├── public/
+│   └── build/           # ビルド済みバンドル
+├── ui/
+│   ├── src/
+│   │   └── page/
+│   │       └── index/
+│   │           ├── client/      # クライアントエントリー
+│   │           ├── server/      # SSRエントリー
+│   │           ├── components/
+│   │           ├── containers/
+│   │           └── store/
+│   ├── test/
+│   └── dev/             # PHP開発スクリプト
+└── vendor/
 ```
 
-## フォルダ設定
+## 設定
 
-`ui/ui.config.js`を編集してpublicフォルダとwebpackでバンドルされるファイルの出力先を指定します。
+### 実行設定
 
-```javascript
-const path = require('path');
-
-module.exports = {
-  public: path.join(__dirname, '../public'),
-  build: path.join(__dirname, '../public/dist')
-};
-
-```
-
-## エントリーファイル設定
-
-`ui/entry.js`にエントリーファイルを指定します。SSRのファイルには`_ssr`ポストフィックスをつけます。(hot module loaderを無効にします)
-
-```javascript
-module.exports = {
-  index_ssr: 'src/page/index/server',
-  index: 'src/page/index/client',
-};
-```
-
-## 開発用UIアプリの実行設定
-
-`ui/dev/config/`フォルダに、JSアプリケーションの設定ファイルを設置します。
+JSアプリケーションの設定を`ui/dev/config/`に配置します：
 
 ```php
 <?php
 $app = 'index';
-$initialState = [
-    'hello' =>['name' => 'World']
+$state = [
+    'hello' => ['name' => 'World']
 ];
-$ssrMetas = [
-    'title' =>'page-title'
+$metas = [
+    'title' => 'ページタイトル'
 ];
 
-return [$app, $initialState, $ssrMetas];
+return [$app, $state, $metas];
 ```
-`$app`はアプリケーション名で、`public/build/dist/{$app}.bundle.js`のファイルに対応します。
-`$initialState`はJSアプリケーションの初期状態（テンプレートエンジンの場合はテンプレートにアサインする値）で
-`$ssrMetas`はSSRだけの時に渡される値です。
 
-任意の名前で設定ファイルを保存して、画面で選択して実行します。
-
-## webルートパス設定
-
-`ui/ui.config/js`でweb公開ルートパス`public`とJSのビルド先を指定します。
-
-```javascript
-const path = require('path');
-module.exports = {
-  public: path.join(__dirname, '../public'),
-  build: path.join(__dirname, '../public/dist')
-};
-```
+- `$app` - アプリケーション名（`public/build/{$app}.bundle.js`にマップ）
+- `$state` - SSRとクライアント両方に渡される初期状態
+- `$metas` - サーバーのみのメタデータ（例：ページタイトル）
 
 ## UIアプリケーションの作成
 
-### サーバーサイド
+### サーバーサイド（SSR）
 
-JSアプリケーションはパラメーターを２つ（`preloadedState`と`metas`）受け取りhtml文字列を返す関数を作成して公開します。以下のコードはReduxの典型的なSSRアプリケーションの例です。
-
-```javascript
-// server.js
-import render from './render';
-
-global.render = render;
-```
+HTMLを返す`render`関数を実装します：
 
 ```javascript
-// render.js
+// server/render.jsx
+import { renderToString } from 'react-dom/server';
+import { Provider } from 'react-redux';
+import serialize from 'serialize-javascript';
+import App from '../containers/App';
+import { configureStore } from '../store/configureStore';
+
 const render = (preloadedState, metas) => {
-  return
-  `<html>
-    <head>
-      <title>${escape(metas.title)}</title>
-    </head>
-    <body>
-      <script>window.__PRELOADED_STATE__ = ${serialize(preloadedState)}</script>
-      <script src="/build/index.bundle.js"></script>
-    <body>
-  </html>`
+  const store = configureStore(preloadedState);
+  const html = renderToString(
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+
+  return `<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>${metas.title ?? ''}</title>
+  </head>
+  <body>
+    <div id="root">${html}</div>
+    <script>window.__PRELOADED_STATE__ = ${serialize(preloadedState)}</script>
+    <script src="/build/index.bundle.js"></script>
+  </body>
+</html>`;
 };
+
 export default render;
 ```
 
 ### クライアントサイド
 
-サーバーサイドでレンダリングから渡された`preloadedState`を用いてDOMを生成し、ドキュメントのルートDOMにします。クラアイントはサーバーサイドのDOMを引き継ぐことができます。
-
-```
-// client.js
-const preloadedState = window.__PRELOADED_STATE__;
-const store = configureStore(preloadedState);
-
-render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('root'),
-);
-```
-
-## JSアプリケーションの実行
-
-Javascriptで作成したUIアプリケーションを実行します。
+SSRからのプリロード状態でハイドレーションします：
 
 ```javascript
-yarn run ui
-```
-上記コマンドを実行して画面に現れたレンダリング方法を選んで実行します。
-デバックを容易にするためサーバーサイドコードをブラウザで実行することもできます。
+// client/index.jsx
+import { hydrateRoot, createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux';
+import { configureStore } from '../store/configureStore';
+import App from '../containers/App';
 
-# コマンド
+const preloadedState = window.__PRELOADED_STATE__;
+const store = configureStore(preloadedState);
+const container = document.getElementById('root');
 
-## PHPアプリケーションの実行
-
-`public`で指定したPHPアプリケーションをPHPビルトインサーバーで実行します。
-
-```
-yarn start
-```
-
-## PHPアプリケーションの開発実行
-
-hot module loaderとbrowserSyncを使って実行します。
-
-```
-yarn run dev
-```
-
-phpmdとphpcsの監視を行う場合にはプロジェクトルートに`phpmd.xml`と`phpcs.xml`設置`package.json`のdevコマンドを編集し`dev`から`dev-qa`に変更します。
-
-```
-"dev": "cross-env NODE_ENV=development gulp --gulpfile ui/gulpfile.js dev-qa",
+if (container.hasChildNodes()) {
+  hydrateRoot(
+    container,
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+} else {
+  createRoot(container).render(
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+}
 ```
 
-## テスト
+## コマンド
 
-```
-yarn test      
-```
+| コマンド | 説明 |
+|---------|------|
+| `npm run dev` | HMR付きVite開発サーバーを起動 |
+| `npm run build` | クライアントとSSRバンドルをビルド |
+| `npm run build:client` | クライアントバンドルのみビルド |
+| `npm run build:ssr` | SSRバンドルのみビルド |
+| `npm test` | Vitestでテストを実行 |
+| `npm run lint` | ESLintを実行 |
 
-JSのテストを`Karma`+`Mocha`+`Chai`で実行監視します。設定を変更するには`karma.conf.js`を編集します。
+## SSRユーティリティライブラリ
 
-## リント
-
-```
-yarn run lint
-```
-
-[Eslint](http://eslint.org/)を実行します。設定を変更するには`.eslintrc`を編集します。
-
-# SSRユーティリティ
-
-[Baracoa](https://github.com/koriym/Koriym.Baracoa)はSSRのためのユーティリティライブラリで、V8を高速に実行するためのスナップショットの機能をサポートします。
-
+[Baracoa](https://github.com/koriym/Koriym.Baracoa)はSSR実行のためのユーティリティライブラリです。パフォーマンス向上のためV8スナップショットをサポートします。

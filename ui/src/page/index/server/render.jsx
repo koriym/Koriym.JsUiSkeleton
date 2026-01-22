@@ -1,31 +1,29 @@
-import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
-import escape from 'escape-html';
 import serialize from 'serialize-javascript';
-import App from '../containers/App';
-import configureStore from '../store/configureStore';
+import App from '../components/App';
+import { configureStore } from '../store/configureStore';
 
 const render = (preloadedState, metas) => {
   const store = configureStore(preloadedState);
-  const root = renderToString(
+  const html = renderToString(
     <Provider store={store}>
       <App />
-    </Provider>,
+    </Provider>
   );
+
   return `<!DOCTYPE html>
+<html>
   <head>
-    <title>${escape(metas.title)}</title>
+    <meta charset="UTF-8">
+    <title>${metas.title ?? ''}</title>
   </head>
   <body>
-    <div id="root">${root}</div>
-    <script>
-      window.__PRELOADED_STATE__ = ${serialize(preloadedState)}
-    </script>
+    <div id="root">${html}</div>
+    <script>window.__PRELOADED_STATE__ = ${serialize(preloadedState)}</script>
     <script src="/build/index.bundle.js"></script>
   </body>
-</html>
-`;
+</html>`;
 };
 
 export default render;

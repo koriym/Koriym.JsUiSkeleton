@@ -1,24 +1,23 @@
 {
     "name": "koriym/js-ui-skeleton",
-    "description": "A Javascript UI skeleton for PHP project",
+    "description": "A JavaScript UI skeleton for PHP projects",
     "keywords": [
         "templating",
         "javascript",
         "SSR"
-    ],    "license": "MIT",
+    ],
+    "license": "MIT",
     "authors": [
         {
             "name": "Akihito Koriyama",
             "email": "akihito.koriyama@gmail.com"
         }
     ],
+    "require": {},
     "require-dev": {
-        "phpv8/v8js-stubs": "^1.3.1",
-        "nacmartin/phpexecjs": "^0.8.7"
-    },
-    "require": {
+        "phpv8/v8js-stubs": "^1.4"
     },
     "suggest": {
-        "koriym/baracoa": "Supports snapshot V8 rendering."
+        "koriym/baracoa": "JavaScript SSR execution library"
     }
 }

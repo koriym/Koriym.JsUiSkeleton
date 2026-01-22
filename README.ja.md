@@ -72,7 +72,7 @@ npm install
 
 ### ディレクトリ構造
 
-```
+```text
 ├── package.json
 ├── vite.config.ts
 ├── vitest.config.ts
@@ -86,7 +86,6 @@ npm install
 │   │           ├── client/      # クライアントエントリー
 │   │           ├── server/      # SSRエントリー
 │   │           ├── components/
-│   │           ├── containers/
 │   │           └── store/
 │   ├── test/
 │   └── dev/             # PHP開発スクリプト
@@ -127,7 +126,7 @@ HTMLを返す`render`関数を実装します：
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
 import serialize from 'serialize-javascript';
-import App from '../containers/App';
+import App from '../components/App';
 import { configureStore } from '../store/configureStore';
 
 const render = (preloadedState, metas) => {
@@ -164,7 +163,7 @@ SSRからのプリロード状態でハイドレーションします：
 import { hydrateRoot, createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { configureStore } from '../store/configureStore';
-import App from '../containers/App';
+import App from '../components/App';
 
 const preloadedState = window.__PRELOADED_STATE__;
 const store = configureStore(preloadedState);

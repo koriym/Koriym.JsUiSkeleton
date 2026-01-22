@@ -4,6 +4,11 @@ import serialize from 'serialize-javascript';
 import App from '../components/App';
 import { configureStore } from '../store/configureStore';
 
+const escapeHtml = (str) =>
+  String(str).replace(/[&<>"']/g, (c) =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]
+  );
+
 const render = (preloadedState, metas) => {
   const store = configureStore(preloadedState);
   const html = renderToString(
@@ -16,7 +21,7 @@ const render = (preloadedState, metas) => {
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>${metas.title ?? ''}</title>
+    <title>${escapeHtml(metas.title ?? '')}</title>
   </head>
   <body>
     <div id="root">${html}</div>

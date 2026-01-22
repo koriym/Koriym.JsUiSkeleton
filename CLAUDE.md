@@ -10,52 +10,49 @@ Koriym.JsUiSkeleton is a JavaScript UI skeleton for PHP projects. It enables wri
 
 ```bash
 # Install dependencies
-yarn install
+npm install
 
-# Development with HMR (PHP + Webpack + BrowserSync)
-yarn dev
+# Development with HMR (Vite)
+npm run dev
 
-# UI-only development (no PHP server)
-yarn ui
+# Production build (client + SSR)
+npm run build
 
-# Production build
-yarn build
+# Build client bundle only
+npm run build:client
+
+# Build SSR bundle only
+npm run build:ssr
 
 # Run tests
-yarn test
+npm test
 
 # Lint JavaScript
-yarn lint
-
-# Start PHP server only (no HMR)
-yarn start
+npm run lint
 ```
 
 ## Architecture
 
 ### Directory Structure
 
-```
+```text
 ├── ui/                     # JavaScript application
 │   ├── src/page/index/     # Page modules
 │   │   ├── server/         # SSR entry (render.jsx)
 │   │   ├── client/         # CSR entry (index.jsx)
 │   │   ├── store/          # Redux store configuration
-│   │   ├── reducers/       # Redux reducers
-│   │   ├── actions/        # Redux action creators
-│   │   ├── components/     # React presentational components
-│   │   └── containers/     # Redux-connected containers
+│   │   └── components/     # React components
 │   ├── dev/                # Development PHP files
 │   │   ├── config/         # Render configurations
 │   │   ├── csr.php         # Client-side rendering demo
 │   │   ├── ssr.php         # Server-side rendering demo
 │   │   └── ssr-dev.php     # SSR debugging in browser
-│   ├── entry.js            # Webpack entry points
-│   ├── webpack.config.js   # Webpack configuration
-│   ├── gulpfile.js         # Gulp tasks
-│   └── karma.conf.js       # Test runner config
+│   └── test/               # Test files
 ├── public/                 # Web root
-│   └── dist/               # Built bundles output
+│   └── build/              # Built bundles output
+├── vite.config.ts          # Vite configuration
+├── vitest.config.ts        # Vitest configuration
+├── eslint.config.js        # ESLint flat config
 └── package.json            # Dependencies and scripts
 ```
 
@@ -69,9 +66,9 @@ yarn start
 
 ### Entry Points
 
-Defined in `ui/entry.js`:
-- `index_ssr` → `src/page/index/server` → `index_ssr.bundle.js`
-- `index` → `src/page/index/client` → `index.bundle.js`
+Defined in `vite.config.ts`:
+- Client: `ui/src/page/index/client/index.jsx` → `public/build/index.bundle.js`
+- SSR: `ui/src/page/index/server/render.jsx` → `public/build/index_ssr.bundle.js`
 
 ### SSR Flow
 
@@ -94,24 +91,22 @@ Defined in `ui/entry.js`:
 | `ui/src/page/index/server/render.jsx` | SSR render function |
 | `ui/src/page/index/client/index.jsx` | CSR entry point |
 | `ui/src/page/index/store/configureStore.js` | Redux store factory |
-| `ui/entry.js` | Webpack entry definitions |
-| `ui/ui.config.js` | Build output paths |
+| `vite.config.ts` | Vite build configuration |
 
 ## Technology Stack
 
-- React 15 / Redux 3 / React-Redux 5
-- Webpack 2 / Babel 6 / Gulp 3
-- Karma / Mocha / Chai / PhantomJS
-- ESLint (Airbnb config)
-- BrowserSync (HMR proxy)
+- React 18 / Redux Toolkit 2 / React-Redux 9
+- Vite 6
+- Vitest
+- ESLint 9 (flat config)
 
 ## PHP Integration
 
-The PHP side uses `nacmartin/phpexecjs` or `koriym/baracoa` to execute JavaScript:
+The PHP side uses `koriym/baracoa` to execute JavaScript:
 
 ```php
 // SSR example
 $execJs = new PhpExecJs();
-$execJs->createContext(file_get_contents('index_ssr.bundle.js'));
-$html = $execJs->evalJs("render($state, $metas)");
+$js = file_get_contents('public/build/index_ssr.bundle.js');
+$html = $execJs->evalJs("{$js}; render({$stateJson}, {$metasJson});");
 ```

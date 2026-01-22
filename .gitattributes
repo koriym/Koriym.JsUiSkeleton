@@ -1,0 +1,13 @@
+# Export ignore
+/.github            export-ignore
+/ui/test            export-ignore
+/ui/dev             export-ignore
+.gitattributes      export-ignore
+.gitignore          export-ignore
+CLAUDE.md           export-ignore
+eslint.config.js    export-ignore
+vitest.config.ts    export-ignore
+
+# Language statistics
+*.md linguist-documentation
+*.json linguist-generated

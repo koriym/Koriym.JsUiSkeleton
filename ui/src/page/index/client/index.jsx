@@ -1,21 +1,23 @@
-import React from 'react';
-import { render } from 'react-dom';
+import { createRoot, hydrateRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import configureStore from '../store/configureStore';
-import App from '../containers/App';
+import { configureStore } from '../store/configureStore';
+import App from '../components/App';
 
-const preloadedState = window.__PRELOADED_STATE__; // eslint-disable-line no-underscore-dangle
+const preloadedState = window.__PRELOADED_STATE__;
 const store = configureStore(preloadedState);
+const container = document.getElementById('root');
 
-render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('root'),
-);
-if (module.hot) {
-  module.hot.accept(App, () => {
-    const NextApp = App;
-    render(<NextApp />, document.getElementById('root'));
-  });
+if (container.hasChildNodes()) {
+  hydrateRoot(
+    container,
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+} else {
+  createRoot(container).render(
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
 }

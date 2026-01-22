@@ -1,248 +1,198 @@
 # JS-UI Skeleton
 
+[![CI](https://github.com/koriym/Koriym.JsUiSkeleton/actions/workflows/ci.yml/badge.svg)](https://github.com/koriym/Koriym.JsUiSkeleton/actions/workflows/ci.yml)
+
 [Japanese](README.ja.md)
 
-## A Javascript UI application skeleton for PHP project
+## A JavaScript UI application skeleton for PHP projects
 
-Instead of PHP's Template Engine, Javascript on the server side or the client side is responsible for creating the view. Server-side rendering is done with V8Js or Node.js.
-Redux React example code is included, but you can freely select the JS template engine or UI framework.
+Server-side rendering (SSR) with V8Js or Node.js for PHP applications. Build your views with modern JavaScript while keeping application logic in PHP.
 
- * [Webpack 2](https://webpack.github.io/) Moudle bundler
- * [Gulp](http://gulpjs.com/) Build system
- * [Babel](https://babeljs.io/) JS transpiler
- * [Karma](https://karma-runner.github.io/0.13/index.html) Test Runner
- * [Mocha](http://mochajs.org/) Test framework
- * [Chai](http://chaijs.com/) BDD / TDD assertion framework
- * [Enzyme](https://github.com/airbnb/enzyme) JavaScript Testing utilities for React
- * [Eslint](http://eslint.org/) Linting utility for JS and JSX
- * [Phantomjs](http://phantomjs.org/) Scriptable Headless WebKit
- * [React](https://facebook.github.io/react/) UI framework
- * [React Hot Loader 3](http://gaearon.github.io/react-hot-loader/) + [BrowserSync](https://browsersync.io/) Live update
- * [Redux](http://redux.js.org/) State container 
+## Stack
 
-## Rendering
-
-### SSR only
-
-Render the static page on the server side. Use JS's template engine and SSR-enabled view libraries such as ReatJs or VueJs.
-
-### SSR + CSR
-
-Generate DOM on server side and convert it to HTML. The generated DOM is handed over to the browser JS. We use SSR-enabled view libraries like ReatJs and VueJs that can generate DOM.
-
-### CSR only
-
-On the server side, just create JSON and generate DOM or HTML with CSR. Normally the non-DOM part of the document's root (such as the OGP `<meta>` tag) is rendered in PHP.
+- [Vite](https://vitejs.dev/) - Next generation frontend tooling
+- [React 18](https://react.dev/) - UI framework
+- [Redux Toolkit](https://redux-toolkit.js.org/) - State management
+- [Vitest](https://vitest.dev/) - Unit testing
+- [ESLint 9](https://eslint.org/) - Code linting (flat config)
 
 ## Prerequisites
 
- * [Node](https://nodejs.org/en/)
- * [Yarn](https://yarnpkg.com/)
- * [V8Js PHP extension](https://github.com/phpv8/v8js) (optional)
- 
+- Node.js 20+
+- [V8Js PHP extension](https://github.com/phpv8/v8js) (optional - Node.js fallback available)
 
-## Demo
+## Rendering Modes
 
-Build and run example redux code.
+### SSR Only
 
-```
+Render static pages on the server side. Use JS template engines or SSR-enabled frameworks like React.
+
+### SSR + CSR (Hydration)
+
+Generate HTML on the server, then hydrate on the client for interactivity.
+
+### CSR Only
+
+Server returns JSON; the browser renders the UI. Use PHP for non-DOM elements like OGP `<meta>` tags.
+
+## Quick Start
+
+```bash
 composer create-project koriym/js-ui-skeleton -n -s dev js-ui
 cd js-ui
-yarn install
-yarn run ui
+npm install
+npm run dev
 ```
 
 ## Installation
 
-There are two ways to make the JS UI application an independent project and to include it in the existing PHP project.
+### New Project
 
-### New installation
-
-```
+```bash
 composer create-project koriym/js-ui-skeleton -n -s dev MyVendor.MyUi
 cd MyVendor.MyUi
-yarn install
+npm install
 ```
 
-When creating it as a package and using it from a PHP project add that package to dependence.
-Since you can manage versions by UI yourself, it is easy to do UI dependency management from PHP projects and parallel work.
+### Add to Existing Project
 
-### Add to existing project
-
-Add the `ui` folder and` package.json` to the existing project.
-
-```
+```bash
 cd path/to/project
 composer require koriym/js-ui-skeleton 1.x-dev
 cp -r vendor/koriym/js-ui-skeleton/ui .
 cp vendor/koriym/js-ui-skeleton/package.json .
-yarn install
+cp vendor/koriym/js-ui-skeleton/vite.config.ts .
+cp vendor/koriym/js-ui-skeleton/vitest.config.ts .
+cp vendor/koriym/js-ui-skeleton/eslint.config.js .
+npm install
 ```
 
-The directory structure looks like this.
+### Directory Structure
 
-```
-├── src             # php
-├── tests           # php
-├── package.json    # JS
-├── node_modules    # JS
-├── ui              # JS
-│   ├── .babelrc
-│   ├── .eslintrc
-│   ├── entry.js
-│   ├── gulpfile.js
-│   ├── karma.conf.js
-│   ├── src
-│   ├── test
-│   ├── ui.config.js
-│   └── webpack.config.js
-└── vendor
-```
-
-## UI Config
-
-Edit `ui/ui.config.js` to specify web public folder and the output directory of the bundled JS file by webpack.
-
-```javascript
-const path = require('path');
-  
-module.exports = {
-  public: path.join(__dirname, '../public'),
-  build: path.join(__dirname, '../public/dist'),
-};
+```text
+├── package.json
+├── vite.config.ts
+├── vitest.config.ts
+├── eslint.config.js
+├── public/
+│   └── build/           # Built bundles
+├── ui/
+│   ├── src/
+│   │   └── page/
+│   │       └── index/
+│   │           ├── client/      # Client entry
+│   │           ├── server/      # SSR entry
+│   │           ├── components/
+│   │           └── store/
+│   ├── test/
+│   └── dev/             # PHP dev scripts
+└── vendor/
 ```
 
-## Entry File
+## Configuration
 
-Specify the entry file in `ui/entry.js`. The SSR file is given a `_ssr` postfix.
+### Run Config
 
-```javascript
-module.exports = {
-  index_ssr: 'src/page/index/server',
-  index: 'src/page/index/client',
-};
-```
-
-## Run Config
-
-Set the JS application configuration file in the `ui/dev/config/` directory.
+Set the JS application configuration in `ui/dev/config/`:
 
 ```php
 <?php
 $app = 'index';
-$initialState = [
+$state = [
     'hello' => ['name' => 'World']
 ];
-$ssrMetas = [
-    'title' => 'page-title'
+$metas = [
+    'title' => 'Page Title'
 ];
 
-return [$app, $initialState, $ssrMetas];
+return [$app, $state, $metas];
 ```
 
-`$app` is the application name, corresponding to the file` public/build/dist/{$app}.bundle.js`.
-`$initialState` is the initial state of the JS application (in the case of the template engine, it is the value assigned to the template)
-`$ssrMetas` is the value passed in SSR only.
+- `$app` - Application name (maps to `public/build/{$app}.bundle.js`)
+- `$state` - Initial state passed to both SSR and client
+- `$metas` - Server-only metadata (e.g., page title)
 
-Save the setting file with an arbitrary name, You select it on the screen and execute it.
+## Creating UI Applications
 
-## Create UI Application
-### Server side
+### Server Side (SSR)
 
-In a JS renderer application, implement `render` function which takes two parameters (`preloadedState` and `metas`) and return html string. This example illustrates typical SSR Redux application.
-
-```javascript
-// server.js
-import render from './render';
-
-global.render = render;
-```
+Implement a `render` function that returns HTML:
 
 ```javascript
-// render.js
+// server/render.jsx
+import { renderToString } from 'react-dom/server';
+import { Provider } from 'react-redux';
+import serialize from 'serialize-javascript';
+import App from '../components/App';
+import { configureStore } from '../store/configureStore';
+
 const render = (preloadedState, metas) => {
-  return
-  `<html>
-    <head>
-      <title>${escape(metas.title)}</title>
-    </head>
-    <body>
-      <script>window.__PRELOADED_STATE__ = ${serialize(preloadedState)}</script>
-      <script src="/build/index.bundle.js"></script>
-    <body>
-  </html>`
+  const store = configureStore(preloadedState);
+  const html = renderToString(
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+
+  return `<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>${metas.title ?? ''}</title>
+  </head>
+  <body>
+    <div id="root">${html}</div>
+    <script>window.__PRELOADED_STATE__ = ${serialize(preloadedState)}</script>
+    <script src="/build/index.bundle.js"></script>
+  </body>
+</html>`;
 };
+
 export default render;
 ```
 
-### Client side
+### Client Side
 
-Render with `preloadedState` which is supplied by SSR. Then insert generated DOM into document root DOM for continuation.
+Hydrate with the preloaded state from SSR:
 
 ```javascript
-// client.js
+// client/index.jsx
+import { hydrateRoot, createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux';
+import { configureStore } from '../store/configureStore';
+import App from '../components/App';
+
 const preloadedState = window.__PRELOADED_STATE__;
 const store = configureStore(preloadedState);
+const container = document.getElementById('root');
 
-render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('root'),
-);
+if (container.hasChildNodes()) {
+  hydrateRoot(
+    container,
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+} else {
+  createRoot(container).render(
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+}
 ```
 
-## Run JS Application
+## Commands
 
-Execute the UI application created with Javascript.
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start Vite dev server with HMR |
+| `npm run build` | Build client and SSR bundles |
+| `npm run build:client` | Build client bundle only |
+| `npm run build:ssr` | Build SSR bundle only |
+| `npm test` | Run tests with Vitest |
+| `npm run lint` | Run ESLint |
 
-```
-yarn run ui
-```
+## SSR Utility Library
 
-Execute the above command and select and execute the rendering method that appeared on the screen.
-You can also run server side code in the browser to make debugging easier.
-
-# Command
-
-## Run the PHP application
-
-Start the PHP application on the PHP built-in server.
-
-```
-yarn start
-```
-
-## Run the PHP application with sync
-
-Start the PHP application with hot module loader and browserSync.
-
-```
-yarn run dev
-```
-
-To monitor `phpmd` and `phpcs`, edit the dev command of `phpmd.xml` and` phpcs.xml` installation `package.json` in the project root and change it from` dev` to `dev-qa`.
-
-```
-"Dev": "cross-env NODE_ENV = development gulp - gulpfile ui / gulpfile.js dev - qa",
-```
-
-## Test
-
-```
-yarn test
-```
-
-Monitor JS test execution by `Karma` +` Mocha` + `Chai`. Edit `karma.conf.js` to change the setting.
-
-## Lint
-
-```
-yarn run lint
-```
-
-Run [Eslint](http://eslint.org/). Edit `.eslintrc` to change the setting.
-
-# SSR Utility library
-
-[Baracoa](https://github.com/koriym/Koriym.Baracoa) is a utility library for SSR. A V8 snapshot is supported to boost the performance.
+[Baracoa](https://github.com/koriym/Koriym.Baracoa) is a utility library for SSR execution. Supports V8 snapshots for improved performance.

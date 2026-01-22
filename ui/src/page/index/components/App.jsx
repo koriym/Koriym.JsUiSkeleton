@@ -1,10 +1,16 @@
-import React from 'react';
-import Hello from '../containers/App';
+import { useSelector, useDispatch } from 'react-redux';
+import { hello } from '../store/slices/helloSlice';
 
-const App = () => (
-  <div>
-    <Hello />
-  </div>
-);
+const App = () => {
+  const name = useSelector((state) => state.hello.name);
+  const dispatch = useDispatch();
+
+  return (
+    <div>
+      <h1>Hello {name}</h1>
+      <button onClick={() => dispatch(hello())}>Click</button>
+    </div>
+  );
+};
 
 export default App;

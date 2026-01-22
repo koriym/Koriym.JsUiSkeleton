@@ -1,24 +1,34 @@
 <?php
-use Nacmartin\PhpExecJs\PhpExecJs;
 
-require dirname(dirname(__DIR__)) . '/vendor/autoload.php';
-$phpexecjs = new PhpExecJs();
-header('x-js-runtime: ' . $phpexecjs->getRuntimeName());
+declare(strict_types=1);
+
+use Koriym\Baracoa\ExecJsInterface;
+use Koriym\Baracoa\PhpExecJs;
+
+require dirname(__DIR__, 2) . '/vendor/autoload.php';
 
 $page = $_GET['page'] ?? 'index';
-list($app, $preloadState, $ssrMetas) = require(__DIR__ . "/config/{$page}.php");
-$code = sprintf('var console = {warn: function(){}, error: function(){}};
-var global = global || this, self = self || this, window = window || this;
-%s
-window.__SERVER_SIDE_MARKUP__ = render(%s,%s);
-',
-    file_get_contents(__DIR__ . "/build/{$app}_ssr.bundle.js"),
-    json_encode($preloadState),
-    json_encode($ssrMetas)
-);
-$start = microtime(true);
-$html = $phpexecjs->evalJs($code);
+if (!preg_match('/^[a-zA-Z0-9_-]+$/', $page)) {
+    http_response_code(400);
+    exit('Invalid page parameter');
+}
+[$app, $state, $metas] = require __DIR__ . "/config/{$page}.php";
 
-header('x-js-time-exec: ' . (microtime(true) - $start));
-header('x-js-time-all:' . (microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"]));
+$bundlePath = dirname(__DIR__, 2) . "/public/build/{$app}_ssr.bundle.js";
+if (!file_exists($bundlePath)) {
+    http_response_code(500);
+    exit("SSR bundle not found: {$bundlePath}. Run 'npm run build:ssr' first.");
+}
+
+/** @var ExecJsInterface $execJs */
+$execJs = new PhpExecJs();
+$js = file_get_contents($bundlePath);
+$stateJson = json_encode($state);
+$metasJson = json_encode($metas);
+
+$start = microtime(true);
+$html = $execJs->evalJs("{$js}; render({$stateJson}, {$metasJson});");
+
+header('X-JS-Time-Exec: ' . (microtime(true) - $start));
+header('X-JS-Time-All: ' . (microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']));
 echo $html;

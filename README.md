@@ -8,7 +8,7 @@
 
 Server-side rendering (SSR) with V8Js or Node.js for PHP applications. Build your views with modern JavaScript while keeping application logic in PHP.
 
-### Stack
+## Stack
 
 - [Vite](https://vitejs.dev/) - Next generation frontend tooling
 - [React 18](https://react.dev/) - UI framework
@@ -69,7 +69,7 @@ npm install
 
 ### Directory Structure
 
-```
+```text
 ├── package.json
 ├── vite.config.ts
 ├── vitest.config.ts
@@ -83,7 +83,6 @@ npm install
 │   │           ├── client/      # Client entry
 │   │           ├── server/      # SSR entry
 │   │           ├── components/
-│   │           ├── containers/
 │   │           └── store/
 │   ├── test/
 │   └── dev/             # PHP dev scripts
@@ -124,7 +123,7 @@ Implement a `render` function that returns HTML:
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
 import serialize from 'serialize-javascript';
-import App from '../containers/App';
+import App from '../components/App';
 import { configureStore } from '../store/configureStore';
 
 const render = (preloadedState, metas) => {
@@ -161,7 +160,7 @@ Hydrate with the preloaded state from SSR:
 import { hydrateRoot, createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { configureStore } from '../store/configureStore';
-import App from '../containers/App';
+import App from '../components/App';
 
 const preloadedState = window.__PRELOADED_STATE__;
 const store = configureStore(preloadedState);
